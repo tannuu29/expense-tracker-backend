@@ -11,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,21 +33,36 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+//                        .requestMatchers("/expenses/**").authenticated()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers(
+                                "/addExpense",
+                                "/allExpense",
+                                "/totalExpenses",
+                                "/amountFilter",
+                                "/paymentMode",
+                                "/dateFilter" ,
+                                "/expenses/**"
+                        ).authenticated()
+//                        .requestMatchers(HttpMethod.POST, "/addExpense").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/addUser").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/allExpense").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/amountFilter").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/paymentMode").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/dateFilter").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/totalExpenses").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/delete/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/update/**").authenticated()
                         .requestMatchers(HttpMethod.PUT,"/changePass").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/profile").authenticated()
-                        .requestMatchers("/expenses/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/addExpense").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/addUser").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/allExpense").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/amountFilter").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/paymentMode").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/dateFilter").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/totalExpenses").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/delete/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/update/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/profile").authenticated()
 
                         .anyRequest().authenticated())
 //                .httpBasic(Customizer.withDefaults())

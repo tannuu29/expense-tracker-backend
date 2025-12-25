@@ -1,12 +1,15 @@
 package com.example.ExpenseManagement.controller;
 
 import com.example.ExpenseManagement.dto.AuthReqDto;
+import com.example.ExpenseManagement.entity.User;
+import com.example.ExpenseManagement.repository.UserRepo;
 import com.example.ExpenseManagement.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +22,8 @@ public class AuthController {
     private AuthenticationManager manager;
     @Autowired
     private JWTUtils jwtUtils;
+    @Autowired
+    private UserRepo userRepo;
 
     @PostMapping("/login")
     public ResponseEntity<?> getToken(@RequestBody AuthReqDto authReqDto){
@@ -27,8 +32,15 @@ public class AuthController {
                     authReqDto.getUsername(),
                     authReqDto.getPassword()
             ));
+
+            User user = userRepo.findByUsername(authReqDto.getUsername()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+
+            String token = jwtUtils.generateToken(user.getUsername());
+
             return ResponseEntity.ok(
-                    Map.of("token", jwtUtils.generateToken(authReqDto.getUsername()))
+                    Map.of("token", token,
+                            "role", user.getRole().name()
+                    )
             );
         }
         catch (Exception e){

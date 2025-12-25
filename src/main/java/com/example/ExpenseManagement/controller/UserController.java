@@ -43,4 +43,10 @@ public class UserController {
 
         return ResponseEntity.ok(Map.of("message", "Profile updated successfully"));
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<UpdateProfileDto> getProfile(Principal principal){
+        String username = principal.getName();
+        return ResponseEntity.ok(userService.getProfile(username));
+    }
 }

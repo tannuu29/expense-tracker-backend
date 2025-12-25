@@ -132,13 +132,13 @@ public class ExpenseService {
 
     public String updateExpense(Long id, ExpenseReqDto expenseReqDto, Principal principal){
         User user = userRepo.findByUsername(principal.getName()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
-        Expense expense = expRepo.findByIdAndUser(id,user).orElse(null);
+        Expense expense = expRepo.findByIdAndUser(id,user).orElseThrow(()-> new RuntimeException("Expense not found"));
         expense.setId(id);
         expense.setDescription(expenseReqDto.getDescription());
         expense.setAmount(expenseReqDto.getAmount());
         expense.setPaymentMode(expenseReqDto.getPaymentMode());
         expense.setDate(expenseReqDto.getDate());
-        expense = expRepo.save(expense);
+        expRepo.save(expense);
         return "Expense is successfully updated!";
     }
 
