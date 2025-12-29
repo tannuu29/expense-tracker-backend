@@ -1,13 +1,11 @@
 package com.example.ExpenseManagement.service;
 
 import com.example.ExpenseManagement.config.SecurityConfig;
-import com.example.ExpenseManagement.dto.ChangePasswordDto;
-import com.example.ExpenseManagement.dto.UpdateProfileDto;
-import com.example.ExpenseManagement.dto.UserReqDto;
-import com.example.ExpenseManagement.dto.UserResDto;
+import com.example.ExpenseManagement.dto.*;
 import com.example.ExpenseManagement.entity.User;
 import com.example.ExpenseManagement.enums.Role;
 import com.example.ExpenseManagement.repository.UserRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,8 +13,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
@@ -98,6 +98,30 @@ public class UserService implements UserDetailsService {
         updateProfileDto.setUsername(user.getUsername());
 
         return updateProfileDto;
+    }
+
+    public AdminDashboardStatsDto getAdminDashboardStats(){
+        // 🔍 TEMP DEBUG — ADD THIS
+        userRepo.findAll().forEach(user -> {
+            System.out.println(
+                    "DEBUG USER -> username: " + user.getUsername()
+                            + ", role: " + user.getRole()
+            );
+        });
+        long totalUsers = userRepo.count();
+        long totalAdmins = userRepo.countByRole(Role.ADMIN);
+        long users = userRepo.countByRole(Role.USER);
+
+        LocalDateTime fiveMinutesAgo = LocalDateTime.now().minusMinutes(5);
+        long activeUsers = userRepo.countByCreatedAtAfter(fiveMinutesAgo);
+
+        AdminDashboardStatsDto dto = new AdminDashboardStatsDto();
+        dto.setTotalUsers(totalUsers);
+        dto.setTotalAdmins(totalAdmins);
+        dto.setUsers(users);
+        dto.setActiveUsers(activeUsers);
+
+        return dto;
     }
 
     @Override

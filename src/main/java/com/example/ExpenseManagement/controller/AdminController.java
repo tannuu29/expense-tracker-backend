@@ -18,21 +18,29 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/user/{id}")
     public ResponseEntity<UserResDto> getUserById(@PathVariable Long id){
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users")
     public ResponseEntity<List<UserResDto>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admins")
+    public ResponseEntity<List<UserResDto>> getAllAdmins() {
+        return ResponseEntity.ok(userService.getAllAdmins());
+    }
+
+    @GetMapping("/onlyUsers")
+    public ResponseEntity<List<UserResDto>> getUsers() {
+        return ResponseEntity.ok(userService.getUsers());
+    }
+
     @GetMapping("/dashboard/stats")
     public ResponseEntity<?> getDashboardStats(){
         return ResponseEntity.ok(userService.getAdminDashboardStats());
     }
+
 }
