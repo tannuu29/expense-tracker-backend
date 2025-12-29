@@ -47,8 +47,18 @@ public class UserService implements UserDetailsService {
     }
 
     public List<UserResDto> getAllUsers(){
+
         return userRepo.findAll().stream().map(this::mapToDto).toList();
     }
+
+    public List<UserResDto> getAllAdmins(){
+        return userRepo.findByRole(Role.ADMIN).stream().map(this::mapToDto).toList();
+    }
+
+    public List<UserResDto> getUsers(){
+        return userRepo.findByRole(Role.USER).stream().map(this::mapToDto).toList();
+    }
+
     public UserResDto mapToDto(User user){
         UserResDto userResDto = new UserResDto();
         userResDto.setUserId(user.getUserId());

@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,14 +19,23 @@ public class User implements UserDetails {
     private Long userId;
     @Column(unique = true, nullable = false)
     private String username;
+
+    @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String password;
+
+    @Column(unique = true)
     private String mobile;
+
+    @Column(unique = true, nullable = false)
     private String email;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private LocalDateTime lastActiveAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

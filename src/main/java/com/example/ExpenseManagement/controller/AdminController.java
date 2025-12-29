@@ -29,4 +29,10 @@ public class AdminController {
     public ResponseEntity<List<UserResDto>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/dashboard/stats")
+    public ResponseEntity<?> getDashboardStats(){
+        return ResponseEntity.ok(userService.getAdminDashboardStats());
+    }
 }

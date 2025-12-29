@@ -23,8 +23,9 @@ public class CreateAdminUser {
                 User user = new User();
                 user.setUsername("tannu");
                 user.setPassword(config.encoder().encode("adminnn"));
-                user.setName("tanisha");
+                user.setName("Tanisha");
                 user.setEmail("tanishanainwal.5@gmail.com");
+                user.setMobile("8130495445");
 
                 user.setRole(Role.ADMIN);
                 userRepo.save(user);

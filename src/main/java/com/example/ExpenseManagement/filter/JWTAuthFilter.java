@@ -1,5 +1,6 @@
 package com.example.ExpenseManagement.filter;
 
+import com.example.ExpenseManagement.entity.User;
 import com.example.ExpenseManagement.repository.UserRepo;
 import com.example.ExpenseManagement.utils.JWTUtils;
 import jakarta.servlet.FilterChain;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @Component
 
@@ -38,14 +40,25 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         }
 
         if (name != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = userRepo.findByUsername(name).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+            User user = userRepo.findByUsername(name)
+                    .orElseThrow(()-> new UsernameNotFoundException("User not found"));
+
+            UserDetails userDetails = user; //user implements userDetails
+
             if (jwtUtils.validate(userDetails,token)){
+                user.setLastActiveAt(LocalDateTime.now());
+                userRepo.save(user);
+
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
                         userDetails.getAuthorities()
                 );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
