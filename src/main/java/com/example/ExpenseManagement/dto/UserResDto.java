@@ -5,6 +5,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class UserResDto {
     private Long userId;
@@ -15,5 +17,7 @@ public class UserResDto {
     private String email;
     @Enumerated(EnumType.STRING)
     private String role;
-
+    private String status;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastActiveAt;
 }

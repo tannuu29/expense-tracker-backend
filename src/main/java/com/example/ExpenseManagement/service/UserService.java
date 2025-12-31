@@ -67,6 +67,14 @@ public class UserService implements UserDetailsService {
         userResDto.setMobile(user.getMobile());
         userResDto.setEmail(user.getEmail());
         userResDto.setRole(user.getRole().name());
+        userResDto.setCreatedAt(user.getCreatedAt());
+        userResDto.setLastActiveAt(user.getLastActiveAt());
+
+        LocalDateTime fiveMinutesAgo = LocalDateTime.now().minusMinutes(5);
+
+        String status = user.getLastActiveAt() != null && user.getLastActiveAt().isAfter(fiveMinutesAgo) ? "Online" : "offline";
+        userResDto.setStatus(status);
+
         return userResDto;
     }
 
@@ -102,12 +110,12 @@ public class UserService implements UserDetailsService {
 
     public AdminDashboardStatsDto getAdminDashboardStats(){
         // 🔍 TEMP DEBUG — ADD THIS
-        userRepo.findAll().forEach(user -> {
-            System.out.println(
-                    "DEBUG USER -> username: " + user.getUsername()
-                            + ", role: " + user.getRole()
-            );
-        });
+//        userRepo.findAll().forEach(user -> {
+//            System.out.println(
+//                    "DEBUG USER -> username: " + user.getUsername()
+//                            + ", role: " + user.getRole()
+//            );
+//        });
         long totalUsers = userRepo.count();
         long totalAdmins = userRepo.countByRole(Role.ADMIN);
         long users = userRepo.countByRole(Role.USER);

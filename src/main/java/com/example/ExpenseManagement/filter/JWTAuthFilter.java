@@ -36,7 +36,6 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             token = authorization.substring(7).trim();
             name = jwtUtils.getUsername(token);
             System.out.println("AUTH HEADER = " + authorization);
-
         }
 
         if (name != null && SecurityContextHolder.getContext().getAuthentication() == null){
@@ -44,6 +43,10 @@ public class JWTAuthFilter extends OncePerRequestFilter {
                     .orElseThrow(()-> new UsernameNotFoundException("User not found"));
 
             UserDetails userDetails = user; //user implements userDetails
+//            System.out.println("DEBUG USER -> username: "
+//                    + userDetails.getUsername()
+//                    + ", authorities: "
+//                    + userDetails.getAuthorities());
 
             if (jwtUtils.validate(userDetails,token)){
                 user.setLastActiveAt(LocalDateTime.now());

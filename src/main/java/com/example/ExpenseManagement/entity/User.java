@@ -39,14 +39,16 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
-    private LocalDateTime lastActiveAt;
-
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "last_active_at")
+    private LocalDateTime lastActiveAt;
 
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
+        this.lastActiveAt = LocalDateTime.now();
     }
 
 
