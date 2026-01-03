@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -31,31 +30,25 @@ public class JWTAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
         String token = null;
-        String name = null;
+        String username = null;
         if(authorization != null && authorization.startsWith("Bearer ")){
             token = authorization.substring(7).trim();
-            name = jwtUtils.getUsername(token);
+            username = jwtUtils.getUsername(token);
             System.out.println("AUTH HEADER = " + authorization);
         }
 
-        if (name != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            User user = userRepo.findByUsername(name)
-                    .orElseThrow(()-> new UsernameNotFoundException("User not found"));
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+            User user = userRepo.findByUsername(username)
+                    .orElse(null);
 
-            UserDetails userDetails = user; //user implements userDetails
-//            System.out.println("DEBUG USER -> username: "
-//                    + userDetails.getUsername()
-//                    + ", authorities: "
-//                    + userDetails.getAuthorities());
-
-            if (jwtUtils.validate(userDetails,token)){
+            if (user!= null && jwtUtils.validate(user,token)){
                 user.setLastActiveAt(LocalDateTime.now());
                 userRepo.save(user);
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
+                        user,
                         null,
-                        userDetails.getAuthorities()
+                        user.getAuthorities()
                 );
 
                 authToken.setDetails(

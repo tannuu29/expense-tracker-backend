@@ -49,4 +49,10 @@ public class UserController {
         String username = principal.getName();
         return ResponseEntity.ok(userService.getProfile(username));
     }
+
+    @GetMapping("/dashboard/users-per-day")
+    public ResponseEntity<?> usersPerDay() {
+        return ResponseEntity.ok(userService.getUserChart());
+    }
+
 }

@@ -14,7 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -23,16 +26,13 @@ public class UserService implements UserDetailsService {
     private UserRepo userRepo;
 
     @Autowired
-    private SecurityConfig config;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public String addUser(UserReqDto userReqDto){
         User user = new User();
         user.setName(userReqDto.getName());
         user.setUsername(userReqDto.getUsername());
-        user.setPassword(config.encoder().encode(userReqDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(userReqDto.getPassword()));
         user.setMobile(userReqDto.getMobile());
         user.setEmail(userReqDto.getEmail());
         user.setRole(Role.USER);
@@ -108,8 +108,16 @@ public class UserService implements UserDetailsService {
         return updateProfileDto;
     }
 
+//    public void updateLastActive(String username) {
+//        User user = userRepo.findByUsername(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//
+//        user.setLastActiveAt(LocalDateTime.now());
+//        userRepo.save(user);
+//    }
+
     public AdminDashboardStatsDto getAdminDashboardStats(){
-        // 🔍 TEMP DEBUG — ADD THIS
+        // 🔍 TEMP DEBUG
 //        userRepo.findAll().forEach(user -> {
 //            System.out.println(
 //                    "DEBUG USER -> username: " + user.getUsername()
@@ -131,6 +139,20 @@ public class UserService implements UserDetailsService {
 
         return dto;
     }
+
+    public List<Map<String, Object>> getUserChart() {
+        List<Object[]> rows = userRepo.getUsersGroupByDate();
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (Object[] row : rows) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("date", row[0]);
+            map.put("count", row[1]);
+            result.add(map);
+        }
+        return result;
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
