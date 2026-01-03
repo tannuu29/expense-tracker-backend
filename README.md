@@ -65,7 +65,7 @@ Maven
 MySQL (if using MySQL)
 
 ### Steps to Run
-git clone <repository-url>
+git clone <[repository-url](https://github.com/tannuu29/ExpenseTracker-backend.git)>
 cd expense-management-backend
 mvn clean install
 mvn spring-boot:run
