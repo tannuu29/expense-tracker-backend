@@ -50,9 +50,4 @@ public class UserController {
         return ResponseEntity.ok(userService.getProfile(username));
     }
 
-    @GetMapping("/dashboard/users-per-day")
-    public ResponseEntity<?> usersPerDay() {
-        return ResponseEntity.ok(userService.getUserChart());
-    }
-
 }

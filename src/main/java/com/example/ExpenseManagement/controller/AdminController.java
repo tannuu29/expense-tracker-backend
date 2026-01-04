@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -43,5 +44,8 @@ public class AdminController {
         return ResponseEntity.ok(userService.getAdminDashboardStats());
     }
 
-    
+    @GetMapping("/dashboard/users-per-day")
+    public ResponseEntity<?> usersPerDay() {
+        return ResponseEntity.ok(userService.getUserChart());
+    }
 }
