@@ -56,7 +56,12 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserReqDto dto) {
         try {
-            return ResponseEntity.ok(userService.addUser(dto));
+            userService.addUser(dto);
+            return ResponseEntity.ok(
+                    Map.of("message", "User registered successfully",
+                            "username", dto.getUsername()
+                    )
+            );
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
