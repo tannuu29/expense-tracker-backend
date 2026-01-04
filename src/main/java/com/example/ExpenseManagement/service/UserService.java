@@ -29,6 +29,15 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     public String addUser(UserReqDto userReqDto){
+
+        if (userRepo.findByUsername(userReqDto.getUsername()).isPresent()) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        if (userRepo.findByEmail(userReqDto.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists");
+        }
+
         User user = new User();
         user.setName(userReqDto.getName());
         user.setUsername(userReqDto.getUsername());

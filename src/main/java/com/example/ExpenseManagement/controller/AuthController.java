@@ -1,9 +1,9 @@
 package com.example.ExpenseManagement.controller;
 
 import com.example.ExpenseManagement.dto.AuthReqDto;
+import com.example.ExpenseManagement.dto.UserReqDto;
 import com.example.ExpenseManagement.entity.User;
-import com.example.ExpenseManagement.enums.Role;
-import com.example.ExpenseManagement.repository.UserRepo;
+import com.example.ExpenseManagement.service.UserService;
 import com.example.ExpenseManagement.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +24,7 @@ public class AuthController {
     @Autowired
     private JWTUtils jwtUtils;
     @Autowired
-    private UserRepo userRepo;
+    private UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<?> getToken(@RequestBody AuthReqDto authReqDto){
@@ -54,4 +52,16 @@ public class AuthController {
 //            throw new RuntimeException("user not found");
         }
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody UserReqDto dto) {
+        try {
+            return ResponseEntity.ok(userService.addUser(dto));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", e.getMessage()));
+        }
+    }
+
 }
