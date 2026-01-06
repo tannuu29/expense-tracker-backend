@@ -1,6 +1,5 @@
 package com.example.ExpenseManagement.service;
 
-import com.example.ExpenseManagement.config.SecurityConfig;
 import com.example.ExpenseManagement.dto.*;
 import com.example.ExpenseManagement.entity.User;
 import com.example.ExpenseManagement.enums.Role;
@@ -126,10 +125,10 @@ public class UserService implements UserDetailsService {
 //    }
 
     public AdminDashboardStatsDto getAdminDashboardStats(){
-        // 🔍 TEMP DEBUG
+        // TEMP DEBUG
 //        userRepo.findAll().forEach(user -> {
 //            System.out.println(
-//                    "DEBUG USER -> username: " + user.getUsername()
+//                    "username: " + user.getUsername()
 //                            + ", role: " + user.getRole()
 //            );
 //        });
