@@ -30,4 +30,13 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+.vscode
+
+### Spring Boot Config
+src/main/resources/application.properties
+
+### Environment files
+.env
+
+### Logs
+*.log
