@@ -20,6 +20,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
 //    long countByStatus(UserStatus status);
     long countByCreatedAtAfter(LocalDateTime time);
     long countByLastActiveAtAfter(LocalDateTime time);
+    Optional<User> findByResetToken(String resetToken);
 
     @Query("""
             SELECT DATE(u.createdAt), COUNT(u)

@@ -2,6 +2,7 @@ package com.example.ExpenseManagement.service;
 
 import com.example.ExpenseManagement.dto.*;
 import com.example.ExpenseManagement.entity.User;
+import com.example.ExpenseManagement.enums.MailType;
 import com.example.ExpenseManagement.enums.Role;
 import com.example.ExpenseManagement.repository.UserRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -26,6 +24,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MailService mailService;
 
     public String addUser(UserReqDto userReqDto){
 
@@ -45,7 +46,16 @@ public class UserService implements UserDetailsService {
         user.setEmail(userReqDto.getEmail());
         user.setRole(Role.USER);
         userRepo.save(user);
-        return "User Successfully added";
+
+        Map<String, String> data = new HashMap<>();
+        data.put("name" , user.getName());
+
+        mailService.sendmail(
+                user.getEmail(),
+                MailType.WELCOME,
+                data
+        );
+        return "User registered successfully";
     }
 
     public UserResDto getUserById(Long id){
@@ -102,6 +112,51 @@ public class UserService implements UserDetailsService {
         user.setMobile(profileDto.getMobile());
 
         userRepo.save(user);
+    }
+
+    public void forgotPassword(String email){
+        User user = userRepo.findByEmail(email).orElseThrow(()-> new RuntimeException("Email not registered"));
+
+        String token = UUID.randomUUID().toString();
+
+        user.setResetToken(token);
+        user.setResetTokenExpiry(LocalDateTime.now().plusMinutes(15));
+        userRepo.save(user);
+
+        String link = "http://localhost:5173/reset-password?token="+ token;
+
+        Map<String, String> data = new HashMap<>();
+        data.put("name" , user.getName());
+        data.put("link", link);
+
+        mailService.sendmail(
+                user.getEmail(),
+                MailType.RESET_PASSWORD,
+                data
+        );
+    }
+
+    public void resetPassword(String token, String newPassword){
+        User user = userRepo.findByResetToken(token).orElseThrow(()-> new RuntimeException("Invalid or expired token"));
+
+        if(user.getResetTokenExpiry().isBefore(LocalDateTime.now())){
+            throw new RuntimeException("Reset token expired");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetToken(null);
+        user.setResetTokenExpiry(null);
+        userRepo.save(user);
+
+        Map<String, String> data = new HashMap<>();
+        data.put("name" ,user.getName());
+
+        mailService.sendmail(
+                user.getEmail(),
+                MailType.PASSWORD_CHANGED,
+                data
+        );
+
     }
 
     public UpdateProfileDto getProfile(String username) {

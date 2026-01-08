@@ -1,6 +1,8 @@
 package com.example.ExpenseManagement.controller;
 
 import com.example.ExpenseManagement.dto.AuthReqDto;
+import com.example.ExpenseManagement.dto.ForgetPasswordDto;
+import com.example.ExpenseManagement.dto.ResetPasswordReqDto;
 import com.example.ExpenseManagement.dto.UserReqDto;
 import com.example.ExpenseManagement.entity.User;
 import com.example.ExpenseManagement.service.UserService;
@@ -69,4 +71,15 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody ForgetPasswordDto forgetPasswordDto){
+        userService.forgotPassword(forgetPasswordDto.getEmail());
+        return ResponseEntity.ok("Password reset link sent to your email.");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordReqDto reqDto){
+        userService.resetPassword(reqDto.getToken(), reqDto.getNewPassword());
+        return ResponseEntity.ok("Password reset successfully");
+    }
 }
