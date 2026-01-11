@@ -1,4 +1,4 @@
-# Expense Management System Backend
+# Expense Management System Backend + Frontend
 
 This project is the backend of the Expense Management System built using Spring Boot. It provides RESTful APIs to manage expenses, handle business logic, and interact with the database.
 
