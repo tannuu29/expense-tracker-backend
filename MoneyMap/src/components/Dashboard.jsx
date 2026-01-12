@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Header from './Header'
 import { fetchWithAuth, API_BASE_URL } from '../utils/auth'
 import './Dashboard.css'
@@ -6,6 +7,7 @@ import './Dashboard.css'
 const EXPENSE_BASE_URL = "http://localhost:80/expenses";
 
 export default function Dashboard() {
+  const navigate = useNavigate()
 
   const [expenses, setExpenses] = useState([])
 
@@ -55,13 +57,13 @@ export default function Dashboard() {
       console.log("Dashboard mounted - role:", role, "token exists:", !!token);
       
       if (role === 'ADMIN') {
-        window.location.href = '/admin/users';
+        navigate('/admin/users');
         return;
       }
       
       if (!token) {
-        console.error("No token on Dashboard mount, redirecting to login");
-        window.location.href = '/';
+        console.error("No token on Dashboard mount, redirecting to landing page");
+        navigate('/');
         return;
       }
       
@@ -81,8 +83,8 @@ export default function Dashboard() {
     console.log("loadAllExpenses called, token exists:", !!token);
     
     if (!token) {
-      console.error("No token found, redirecting to login");
-      window.location.href = '/';
+      console.error("No token found, redirecting to landing page");
+      navigate('/');
       return;
     }
 
@@ -452,7 +454,7 @@ export default function Dashboard() {
             localStorage.removeItem('token');
             localStorage.removeItem('role');
             console.error("API failed with status", res.status);
-            window.location.href = '/';
+            navigate('/');
             return;
           }
           return res.json();

@@ -27,9 +27,9 @@ export default function Login({ onClose, onSwitchToSignUp, registrationSuccess, 
 
   useEffect(() => {
     const handleEscape = (e) => {
-      if (e.key === 'Escape') {
-        onClose()
-      }
+      if (e.key === 'Escape' && typeof onClose === 'function') {
+  onClose()
+}
     }
 
     document.addEventListener('keydown', handleEscape)
@@ -151,7 +151,9 @@ export default function Login({ onClose, onSwitchToSignUp, registrationSuccess, 
         // Minimal console logs for debugging
         console.log('Login successful - Token stored:', data.token.substring(0, 20) + '...')
         console.log('Login successful - Role stored:', data.role || 'N/A')
-        onClose()
+        if (typeof onClose === 'function') {
+  onClose()
+}
 
         // ROLE-BASED REDIRECT (SINGLE LOGIN FLOW)
         if (data.role === 'ADMIN') {
@@ -176,10 +178,19 @@ export default function Login({ onClose, onSwitchToSignUp, registrationSuccess, 
   }
 
   return (
-    <div className="auth-modal-overlay" onClick={onClose}>
+   <div
+  className="auth-modal-overlay"
+  onClick={() => {
+    if (typeof onClose === 'function') onClose()
+  }}
+>
       <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="auth-close-btn" onClick={onClose} aria-label="Close">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+<button
+  className="auth-close-btn"
+  onClick={() => {
+    if (typeof onClose === 'function') onClose()
+  }}
+>          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
@@ -272,8 +283,10 @@ export default function Login({ onClose, onSwitchToSignUp, registrationSuccess, 
               type="button"
               className="forgot-password-link"
               onClick={() => {
-                onClose()
-                navigate('/forgot-password')
+                if (typeof onClose === 'function') {
+  onClose()
+}
+navigate('/forgot-password')
               }}
             >
               Forgot password?

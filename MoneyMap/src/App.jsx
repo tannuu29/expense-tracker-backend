@@ -13,6 +13,7 @@ import AdminRoute from './components/AdminRoute'
 import AdminLayout from './components/AdminLayout'
 import Login from './components/Login'
 import AdminUserDetails from './components/AdminUserDetails'
+import AdminProfile from './components/AdminProfile'
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         >
           <Route path="users" element={<AdminUsers />} />
           <Route path="users/:id" element={<AdminUserDetails />} />
+          <Route path="profile" element={<AdminProfile />} />
         </Route>
         
       </Routes>

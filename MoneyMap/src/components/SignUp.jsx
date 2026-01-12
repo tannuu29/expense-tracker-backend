@@ -94,7 +94,7 @@ export default function SignUp({ onClose, onSwitchToLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitError('')
-    
+
     if (!validateForm()) {
       return
     }
@@ -313,8 +313,8 @@ export default function SignUp({ onClose, onSwitchToLogin }) {
             </div>
           )}
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="auth-submit-btn"
             disabled={isLoading}
           >
@@ -325,9 +325,20 @@ export default function SignUp({ onClose, onSwitchToLogin }) {
         <div className="auth-footer">
           <p>
             Already have an account?{' '}
-            <button type="button" className="auth-switch-link" onClick={onSwitchToLogin}>
-              Login
+            <button
+              type="button"
+              className="auth-switch-link"
+              onClick={() => {
+                if (typeof onSwitchToSignUp === 'function') {
+                  onSwitchToSignUp()
+                } else {
+                  navigate('/register') // or /signup — use your route
+                }
+              }}
+            >
+              Sign Up
             </button>
+
           </p>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { fetchWithAuth, API_BASE_URL } from '../utils/auth'
 import './AuthForms.css'
 
-export default function ChangePassword() {
+export default function ChangePassword({ onBack }) {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     oldPassword: '',
@@ -141,7 +141,7 @@ export default function ChangePassword() {
           <button
             type="button"
             className="auth-submit-btn"
-            onClick={() => navigate('/profile')}
+            onClick={onBack || (() => navigate('/profile'))}
             style={{ backgroundColor: '#6c757d', width: 'auto', minWidth: '120px' }}
           >
             Back

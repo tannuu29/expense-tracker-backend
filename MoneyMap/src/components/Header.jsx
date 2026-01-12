@@ -49,11 +49,11 @@ export default function Header() {
 
 
     const handleLogout = () => {
-        // Simple logout: clear auth and redirect to login
+        // Simple logout: clear auth and redirect to landing page
         localStorage.removeItem('token')
         localStorage.removeItem('role')
         setIsMenuOpen(false)
-        navigate('/login')
+        navigate('/')
     }
 
     const handleProfile = () => {
