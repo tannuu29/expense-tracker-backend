@@ -328,17 +328,10 @@ export default function SignUp({ onClose, onSwitchToLogin }) {
             <button
               type="button"
               className="auth-switch-link"
-              onClick={() => {
-                if (typeof onSwitchToSignUp === 'function') {
-                  onSwitchToSignUp()
-                } else {
-                  navigate('/register') // or /signup — use your route
-                }
-              }}
+              onClick={onSwitchToLogin}
             >
-              Sign Up
+              Log in
             </button>
-
           </p>
         </div>
       </div>
