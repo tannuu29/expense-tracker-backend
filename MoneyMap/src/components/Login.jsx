@@ -88,7 +88,7 @@ export default function Login({ onClose, onSwitchToSignUp, registrationSuccess, 
     console.log("LOGIN SUBMIT TRIGGERED"); // 🔥 ADD THIS
     e.preventDefault()
     setLoginError('')
-    
+
     if (!validateForm()) {
       return
     }
@@ -99,7 +99,7 @@ export default function Login({ onClose, onSwitchToSignUp, registrationSuccess, 
       // Call login API
       const loginUrl = `${API_BASE_URL}/login`;
       console.log('Attempting login to:', loginUrl);
-      
+
       const response = await fetch(loginUrl, {
         method: 'POST',
         headers: {
@@ -138,24 +138,28 @@ export default function Login({ onClose, onSwitchToSignUp, registrationSuccess, 
 
       // Success - get token and role from response
       const data = await response.json()
-      
+
       if (data.token) {
         // Store JWT token in localStorage under key "token"
         localStorage.setItem('token', data.token)
-        
+
         // Store user role in localStorage under key "role"
         if (data.role) {
           localStorage.setItem('role', data.role)
         }
-        
+
         // Minimal console logs for debugging
         console.log('Login successful - Token stored:', data.token.substring(0, 20) + '...')
         console.log('Login successful - Role stored:', data.role || 'N/A')
-        
-        // Close modal and redirect to dashboard
         onClose()
-        // Use navigate instead of window.location.href to avoid full page reload
-        navigate('/dashboard', { replace: true })
+
+        // ROLE-BASED REDIRECT (SINGLE LOGIN FLOW)
+        if (data.role === 'ADMIN') {
+          navigate('/admin/users', { replace: true })
+        } else {
+          navigate('/dashboard', { replace: true })
+        }
+
       } else {
         setLoginError('Invalid response from server. Please try again.')
       }
@@ -170,7 +174,7 @@ export default function Login({ onClose, onSwitchToSignUp, registrationSuccess, 
       setIsLoading(false)
     }
   }
- 
+
   return (
     <div className="auth-modal-overlay" onClick={onClose}>
       <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
@@ -181,21 +185,21 @@ export default function Login({ onClose, onSwitchToSignUp, registrationSuccess, 
           </svg>
         </button>
 
-{location.state?.registered && (
-  <div className="success-message">
-    Registration successful! Please login.
-  </div>
-)}
+        {location.state?.registered && (
+          <div className="success-message">
+            Registration successful! Please login.
+          </div>
+        )}
 
         <div className="auth-header">
           <h2 className="auth-title">Welcome Back</h2>
           <p className="auth-subtitle">Login to your MoneyMap account</p>
           {registrationSuccess && (
-            <div className="success-message" style={{ 
-              marginTop: '16px', 
-              padding: '12px', 
-              backgroundColor: '#d4edda', 
-              border: '1px solid #c3e6cb', 
+            <div className="success-message" style={{
+              marginTop: '16px',
+              padding: '12px',
+              backgroundColor: '#d4edda',
+              border: '1px solid #c3e6cb',
               borderRadius: '8px',
               color: '#155724',
               textAlign: 'center',
@@ -264,8 +268,8 @@ export default function Login({ onClose, onSwitchToSignUp, registrationSuccess, 
               <input type="checkbox" className="checkbox-input" />
               <span>Remember me</span>
             </label>
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="forgot-password-link"
               onClick={() => {
                 onClose()
@@ -282,8 +286,8 @@ export default function Login({ onClose, onSwitchToSignUp, registrationSuccess, 
             </div>
           )}
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="auth-submit-btn"
             disabled={isLoading}
           >

@@ -10,8 +10,8 @@ import ForgotPassword from './components/ForgotPassword'
 import ResetPassword from './components/ResetPassword'
 import AdminUsers from './components/AdminUsers'
 import AdminRoute from './components/AdminRoute'
-import AdminLogin from './components/AdminLogin'
 import AdminLayout from './components/AdminLayout'
+import Login from './components/Login'
 import AdminUserDetails from './components/AdminUserDetails'
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactUs />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/admin"
           element={
@@ -38,6 +38,7 @@ function App() {
           <Route path="users" element={<AdminUsers />} />
           <Route path="users/:id" element={<AdminUserDetails />} />
         </Route>
+        
       </Routes>
     </Router>
   )

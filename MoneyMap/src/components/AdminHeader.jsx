@@ -8,7 +8,7 @@ export default function AdminHeader() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    navigate("/admin/login");
+    navigate("/login");
   };
 
   return (

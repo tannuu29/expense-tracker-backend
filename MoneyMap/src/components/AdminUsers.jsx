@@ -36,11 +36,6 @@ export default function AdminUsers() {
           method: "GET",
         });
 
-        if (res.status === 401 || res.status === 403) {
-          setError("Unauthorized. Please login again.");
-          return;
-        }
-
         if (!res.ok) {
           let message = `Failed to load stats (${res.status})`;
           try {
@@ -60,6 +55,9 @@ export default function AdminUsers() {
         });
       } catch (e) {
         console.error("Error loading stats:", e);
+        if (e.message === 'Unauthorized' || e.message === 'Forbidden') {
+          setError("Unauthorized. Please login again.");
+        }
         // Don't set error for stats, just use defaults
       }
     }
@@ -96,12 +94,6 @@ export default function AdminUsers() {
             method: "GET",
           });
 
-          if (res.status === 401 || res.status === 403) {
-            setError("Unauthorized. Please login again.");
-            setLoading(false);
-            return;
-          }
-
           if (!res.ok) {
             let message = `Request failed (${res.status})`;
             try {
@@ -121,12 +113,6 @@ export default function AdminUsers() {
           const res = await fetchWithAuth(`${API_BASE_URL}/admin/onlyUsers`, {
           method: "GET",
         });
-
-          if (res.status === 401 || res.status === 403) {
-            setError("Unauthorized. Please login again.");
-            setLoading(false);
-            return;
-          }
 
         if (!res.ok) {
           let message = `Request failed (${res.status})`;
@@ -153,13 +139,6 @@ export default function AdminUsers() {
             }),
           ]);
 
-          if (usersRes.status === 401 || usersRes.status === 403 || 
-              adminsRes.status === 401 || adminsRes.status === 403) {
-            setError("Unauthorized. Please login again.");
-            setLoading(false);
-            return;
-          }
-
           if (!usersRes.ok || !adminsRes.ok) {
             let message = `Request failed`;
             try {
@@ -179,7 +158,11 @@ export default function AdminUsers() {
           setAdmins(Array.isArray(adminsData) ? adminsData : []);
         }
       } catch (e) {
-        setError(e?.message || "Failed to load data");
+        if (e.message === 'Unauthorized' || e.message === 'Forbidden') {
+          setError("Unauthorized. Please login again.");
+        } else {
+          setError(e?.message || "Failed to load data");
+        }
       } finally {
         setLoading(false);
       }

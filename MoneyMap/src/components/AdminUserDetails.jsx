@@ -37,12 +37,6 @@ export default function AdminUserDetails() {
           method: "GET",
         });
 
-        if (res.status === 401 || res.status === 403) {
-          setError("Unauthorized. Please login again.");
-          setLoading(false);
-          return;
-        }
-
         if (!res.ok) {
           let message = `Request failed (${res.status})`;
           try {
@@ -57,7 +51,11 @@ export default function AdminUserDetails() {
         const data = await res.json();
         setUser(data || null);
       } catch (e) {
-        setError(e?.message || "Failed to load user");
+        if (e.message === 'Unauthorized' || e.message === 'Forbidden') {
+          setError("Unauthorized. Please login again.");
+        } else {
+          setError(e?.message || "Failed to load user");
+        }
       } finally {
         setLoading(false);
       }

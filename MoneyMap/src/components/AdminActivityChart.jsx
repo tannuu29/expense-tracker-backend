@@ -21,12 +21,6 @@ export default function AdminActivityChart() {
           }
         );
 
-        if (res.status === 401 || res.status === 403) {
-          setError("Unauthorized. Please login again.");
-          setLoading(false);
-          return;
-        }
-
         if (!res.ok) {
           let message = `Failed to load chart data (${res.status})`;
           try {
@@ -52,7 +46,11 @@ export default function AdminActivityChart() {
           setChartData(formattedData);
         }
       } catch (e) {
-        setError(e?.message || "Failed to load chart data");
+        if (e.message === 'Unauthorized' || e.message === 'Forbidden') {
+          setError("Unauthorized. Please login again.");
+        } else {
+          setError(e?.message || "Failed to load chart data");
+        }
         setChartData([]);
       } finally {
         setLoading(false);

@@ -49,11 +49,11 @@ export default function Header() {
 
 
     const handleLogout = () => {
-        // Simple logout: clear auth and go home
+        // Simple logout: clear auth and redirect to login
         localStorage.removeItem('token')
         localStorage.removeItem('role')
         setIsMenuOpen(false)
-        navigate('/')
+        navigate('/login')
     }
 
     const handleProfile = () => {

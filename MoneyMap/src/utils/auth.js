@@ -1,12 +1,13 @@
 /**
  * Global authentication fetch helper
  * Provides a standardized way to make authenticated API calls
- * Handles 401 (unauthorized) by logging out and redirecting
- * Handles 403 (forbidden) by throwing an error without logging out
+ * Reads JWT token from localStorage and sends Authorization header
+ * Throws errors on 401 or 403 responses
  * 
  * @param {string} url - The API endpoint URL
  * @param {object} options - Fetch options (method, body, headers, etc.)
  * @returns {Promise<Response>} - Fetch response promise
+ * @throws {Error} - Throws error on 401 or 403 responses
  */
 export const fetchWithAuth = async (url, options = {}) => {
   const token = localStorage.getItem("token")?.trim();
@@ -18,7 +19,7 @@ export const fetchWithAuth = async (url, options = {}) => {
 
   // Always add Authorization header if token exists
   if (token) {
-    headers['Authorization'] = `Bearer ${localStorage.getItem("token")?.trim()}`;
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
   const response = await fetch(url, {
@@ -26,20 +27,12 @@ export const fetchWithAuth = async (url, options = {}) => {
     headers,
   });
 
-  // Handle 401: Token expired or invalid → logout and redirect
+  // Handle 401: Token expired or invalid → throw error
   if (response.status === 401) {
-    // Clear authentication data
-    localStorage.clear();
-    
-    // Show alert and redirect
-    alert('Session expired. Please login again.');
-    window.location.href = '/';
-    
-    // Return the response so calling code can handle it if needed
-    return response;
+    throw new Error('Unauthorized');
   }
 
-  // Handle 403: Forbidden → DO NOT LOGOUT, just throw error
+  // Handle 403: Forbidden → throw error
   if (response.status === 403) {
     throw new Error('Forbidden');
   }
