@@ -35,7 +35,6 @@ export default function ContactUs() {
 
   return (
     <div className="contact-container">
-      <Header />
       <div className="contact-content">
         <div className="contact-hero">
           <h1 className="contact-title">Contact Us</h1>
