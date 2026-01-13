@@ -1,33 +1,42 @@
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import LandingPage from './components/LandingPage'
-import Dashboard from './components/Dashboard'
-import About from './components/About'
-import ContactUs from './components/ContactUs'
-import Profile from './components/Profile'
-import ChangePassword from './components/ChangePassword'
-import ForgotPassword from './components/ForgotPassword'
-import ResetPassword from './components/ResetPassword'
-import AdminUsers from './components/AdminUsers'
-import AdminRoute from './components/AdminRoute'
-import AdminLayout from './components/AdminLayout'
-import Login from './components/Login'
-import AdminUserDetails from './components/AdminUserDetails'
-import AdminProfile from './components/AdminProfile'
+import LandingPage from './pages/public/LandingPage'
+import Dashboard from './pages/user/Dashboard'
+import About from './pages/public/About'
+import ContactUs from './pages/public/ContactUs'
+import Profile from './pages/user/Profile'
+import ChangePassword from './pages/auth/ChangePassword'
+import ForgotPassword from './pages/auth/ForgotPassword'
+import ResetPassword from './pages/auth/ResetPassword'
+import AdminUsers from './pages/admin/AdminUsers'
+import AdminRoute from './components/routes/AdminRoute'
+import AdminLayout from './components/layouts/AdminLayout'
+import Login from './pages/auth/Login'
+import AdminUserDetails from './pages/admin/AdminUserDetails'
+import AdminProfile from './pages/admin/AdminProfile'
+import ProtectedRoute from './components/routes/ProtectedRoute'
 
 function App() {
   return (
     <Router>
+
+      {/* PUBLIC ROUTES */}
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/change-password" element={<ChangePassword />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/login" element={<Login />} />
+
+          {/* USER PROTECTED ROUTES */}
+    <Route element={<ProtectedRoute />}>
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/change-password" element={<ChangePassword />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
+    
+    {/* ADMIN ROUTES */}
+    </Route>
         <Route
           path="/admin"
           element={
