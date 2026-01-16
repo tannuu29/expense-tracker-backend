@@ -15,9 +15,11 @@ import Login from './pages/auth/Login'
 import AdminUserDetails from './pages/admin/AdminUserDetails'
 import AdminProfile from './pages/admin/AdminProfile'
 import ProtectedRoute from './components/routes/ProtectedRoute'
+import Developer from './Developer'
 
 function App() {
   return (
+    <>
     <Router>
 
       {/* PUBLIC ROUTES */}
@@ -52,6 +54,12 @@ function App() {
         
       </Routes>
     </Router>
+
+    <div style={{ padding: "20px" }}>
+      <h1>Expense Management System</h1>
+      <Developer />
+    </div>
+    </>
   )
 }
 
