@@ -17,13 +17,16 @@ const Developer = () => {
   }, []);
 
   return (
-    <div style={{ border: "1px solid #ddd", padding: "15px", width: "350px", borderRadius: "8px" }}>
+    <>
+    <h1 style={{padding: "20px"}}>Expense Management System</h1>
+    <div style={{ border: "1px solid #ddd", padding: "20px", width: "350px", borderRadius: "8px", margin: "45px" }}>
       <h2>About Developer</h2>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {developer ? (
-        <div>
+        <div  style={{ padding: "20px" }}>
+    
           <p><strong>Name:</strong> {developer.name}</p>
           <p><strong>Project:</strong> {developer.project}</p>
           <p><strong>Tech Stack:</strong> {developer.techStack}</p>
@@ -32,6 +35,7 @@ const Developer = () => {
         <p>Loading...</p>
       )}
     </div>
+    </>
   );
 };
 

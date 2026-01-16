@@ -4,6 +4,7 @@ import photo from '../../assets/expense_logo.png'
 import './LandingPage.css'
 import Login from '../auth/Login'
 import SignUp from '../auth/SignUp'
+import Footer from '../../Footer'
 
 export default function LandingPage() {
   const location = useLocation()
@@ -353,9 +354,9 @@ export default function LandingPage() {
             </ul>
           </div>
         </div>
-        <div className="footer-bottom">
-          <p>©2024-2025 MoneyMap, Inc. All rights reserved.</p>
-        </div>
+        {/* <div className="footer-bottom">
+          <Footer/>
+        </div> */}
       </footer>
 
       {showLogin && (

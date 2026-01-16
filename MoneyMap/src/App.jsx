@@ -16,10 +16,12 @@ import AdminUserDetails from './pages/admin/AdminUserDetails'
 import AdminProfile from './pages/admin/AdminProfile'
 import ProtectedRoute from './components/routes/ProtectedRoute'
 import Developer from './Developer'
+import Footer from './Footer'
 
 function App() {
   return (
     <>
+    
     <Router>
 
       {/* PUBLIC ROUTES */}
@@ -28,6 +30,9 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/login" element={<Login />} />
+       
+      <Route path='/developer' element= {<Developer/>} />
+   
 
           {/* USER PROTECTED ROUTES */}
     <Route element={<ProtectedRoute />}>
@@ -50,15 +55,12 @@ function App() {
           <Route path="users" element={<AdminUsers />} />
           <Route path="users/:id" element={<AdminUserDetails />} />
           <Route path="profile" element={<AdminProfile />} />
+
         </Route>
         
       </Routes>
     </Router>
-
-    <div style={{ padding: "20px" }}>
-      <h1>Expense Management System</h1>
-      <Developer />
-    </div>
+     <Footer />
     </>
   )
 }
