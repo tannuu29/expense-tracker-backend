@@ -54,6 +54,7 @@ public class SecurityConfig {
                                 "/dateFilter" ,
                                 "/expenses/**"
                         ).authenticated()
+                        .requestMatchers(HttpMethod.GET,"/developer").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/addExpense").permitAll()
                         .requestMatchers(HttpMethod.POST, "/addUser").permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/allExpense").permitAll()
