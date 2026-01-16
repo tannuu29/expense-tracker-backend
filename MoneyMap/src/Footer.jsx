@@ -15,7 +15,7 @@ const Footer = () => {
       marginTop: "10px",
       padding: "15px",
       textAlign: "center",
-      backgroundColor: "rgb(10, 56, 5);",   // dark gray
+      backgroundColor: "rgb(10, 56, 5)",   // dark gray
       color: "white",
       fontSize: "14px"
     }}>

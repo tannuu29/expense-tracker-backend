@@ -338,3 +338,54 @@
 .custom-header .nav-link {
   scroll-behavior: smooth;
 }
+
+
+/* ===== SHIFT ABOUT & CONTACT TO THE LEFT ===== */
+
+.landing-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 2rem;      /* <-- pushes it closer to logo */
+  margin-right: auto;     /* <-- pushes buttons to the right */
+}
+
+/* Keep links looking consistent */
+.landing-nav-link {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  opacity: 0.85;
+  font-weight: 500;
+  font-size: 1.15rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+
+/* Underline hover effect similar to your nav-link */
+.landing-nav-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #28a745, #20c997);
+  transition: width 0.3s ease;
+}
+
+.landing-nav-link:hover {
+  color: #28a745;
+  background-color: rgba(40, 167, 69, 0.1);
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+.landing-nav-link:hover::before {
+  width: 80%;
+}
