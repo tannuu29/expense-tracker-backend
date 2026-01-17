@@ -12,10 +12,10 @@ const Footer = () => {
 
   return (
     <footer style={{
-      marginTop: "10px",
+      // marginTop: "10px",
       padding: "15px",
       textAlign: "center",
-      backgroundColor: "rgb(10, 56, 5)",   // dark gray
+      backgroundColor: "#242424",   // dark gray
       color: "white",
       fontSize: "14px"
     }}>

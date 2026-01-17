@@ -15,7 +15,7 @@ import Login from './pages/auth/Login'
 import AdminUserDetails from './pages/admin/AdminUserDetails'
 import AdminProfile from './pages/admin/AdminProfile'
 import ProtectedRoute from './components/routes/ProtectedRoute'
-import Developer from './Developer'
+import Developer from './pages/public/Developer'
 import Footer from './Footer'
 
 function App() {

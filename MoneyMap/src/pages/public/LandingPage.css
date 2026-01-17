@@ -613,7 +613,7 @@
 
 /* Footer */
 .landing-footer {
-  background-color: #152e22;
+  background-color: #242424;
   padding: 60px 20px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -678,6 +678,12 @@
   text-align: center;
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.9rem;
+}
+
+
+.landing-footer {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* light line */
+  padding-bottom: 20px;
 }
 
 /* Responsive Design */

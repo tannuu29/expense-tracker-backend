@@ -340,10 +340,17 @@ export default function LandingPage() {
               <li><a href="#careers">Careers</a></li>
             </ul>
             <div className="social-links">
-              <a href="#twitter" aria-label="Twitter">🐦</a>
-              <a href="#facebook" aria-label="Facebook">📘</a>
-              <a href="#linkedin" aria-label="LinkedIn">💼</a>
-              <a href="#instagram" aria-label="Instagram">📷</a>
+              <a href="#twitter" aria-label="Twitter">
+                <i class="fa-brands fa-twitter"></i></a>
+              <a href="#facebook" aria-label="Facebook">
+                <i class="fa-brands fa-facebook-f"></i>
+              </a>
+              <a href="#linkedin" aria-label="LinkedIn">
+                <i class="fa-brands fa-linkedin"></i>
+              </a>
+              <a href="#instagram" aria-label="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
             </div>
           </div>
           <div className="footer-column">
